@@ -1,9 +1,7 @@
-import base64
 import matplotlib.pyplot as plt
 
 from bs4 import BeautifulSoup
 from datetime import datetime
-from io import BytesIO
 from urllib.request import Request, urlopen
 
 req = Request('https://www.tsa.gov/coronavirus/passenger-throughput', headers={'User-Agent': 'Mozilla/5.0'})
@@ -38,12 +36,4 @@ plt.plot(date, curr, color='red', label='2020')
 plt.plot(date, prev, color='blue', label='2019')
 plt.gcf().autofmt_xdate(rotation=25)
 plt.legend(loc="center right")
-
-tmpfile = BytesIO()
-fig.savefig(tmpfile, format='png')
-encoded = base64.b64encode(tmpfile.getvalue()).decode('utf-8')
-
-html = 'TSA checkpoint travel numbers for 2020 and 2019' + '<img src=\'data:image/png;base64,{}\'>'.format(encoded)
-
-with open('tsa_checkpoint.html', 'w') as f:
-    f.write(html)
+plt.savefig('tsa_checkpoint.png')
